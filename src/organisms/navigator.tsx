@@ -44,23 +44,23 @@ export const Navigator = () => {
           <DrawerHeader>メニュー</DrawerHeader>
           <VStack mt={5} gap={5}>
             {currentUser ? (
-              routes.map((route, ind) => (
-                <Button
-                  key={ind}
-                  w="80%"
-                  colorScheme={
-                    route.path === `/${location.pathname.split("/")[1]}`
-                      ? "twitter"
-                      : "gray"
-                  }
-                  onClick={() => {
-                    navigate(route.path);
-                    onClose();
-                  }}
-                >
-                  {route.title}
-                </Button>
-              ))
+              routes
+                .filter((route) => route.path !== "/event/create")
+                .map((route, ind) => (
+                  <Button
+                    key={ind}
+                    w="80%"
+                    colorScheme={
+                      route.path === location.pathname ? "twitter" : "gray"
+                    }
+                    onClick={() => {
+                      navigate(route.path);
+                      onClose();
+                    }}
+                  >
+                    {route.title}
+                  </Button>
+                ))
             ) : (
               <Heading size="sm">ログインしてください</Heading>
             )}
