@@ -9,7 +9,7 @@ import { CreateEventPage } from "./pages/calc/event/create";
 import { PayPage } from "./pages/calc/pay";
 import { NotFoundPage } from "./pages/notfound";
 import { AuthGuard } from "./atoms/auth-guard";
-import { LoginPage } from "./pages/login";
+import { SigninPage } from "./pages/signin";
 import { UserProfilePage } from "./pages/user/profile";
 import { customTheme } from "./utils/theme";
 import { AuthLoading } from "./molecules/auth-loading";
@@ -34,7 +34,7 @@ export const App = () => {
                 </AuthGuard>
               }
             />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signin" element={<SigninPage />} />
             <Route
               path="/profile"
               element={

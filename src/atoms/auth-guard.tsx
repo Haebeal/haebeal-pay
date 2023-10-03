@@ -8,5 +8,5 @@ export const AuthGuard = ({ children }: { children: JSX.Element }) => {
     return children;
   }
 
-  return <Navigate to="/login" />;
+  return <Navigate to="/signin" />;
 };
