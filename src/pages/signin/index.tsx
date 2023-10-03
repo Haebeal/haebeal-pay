@@ -9,7 +9,7 @@ import {
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 
-export const LoginPage = () => {
+export const SigninPage = () => {
   const { signin, currentUser } = useAuth();
 
   if (currentUser) {
