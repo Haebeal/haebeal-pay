@@ -1,4 +1,10 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import {
+  Center,
+  ChakraProvider,
+  CircularProgress,
+  Heading,
+  VStack,
+} from "@chakra-ui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
@@ -14,7 +20,18 @@ root.render(
   <React.StrictMode>
     <RecoilRoot>
       <ChakraProvider theme={customTheme}>
-        <RouterProvider router={router} />
+        <React.Suspense
+          fallback={
+            <Center h="100vh">
+              <VStack gap={2}>
+                <CircularProgress isIndeterminate color="twitter.500" />
+                <Heading size="sm">読み込み中...</Heading>
+              </VStack>
+            </Center>
+          }
+        >
+          <RouterProvider router={router} />
+        </React.Suspense>
       </ChakraProvider>
     </RecoilRoot>
   </React.StrictMode>
