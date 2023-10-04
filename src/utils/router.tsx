@@ -1,15 +1,15 @@
 import { createBrowserRouter } from "react-router-dom";
-import { SigninPage } from "../pages/signin";
-import { Layout } from "../pages/layout";
-import { CalcPage } from "../pages/calc";
-import { EventPage } from "../pages/calc/event";
-import { CreateEventPage } from "../pages/calc/event/create";
-import { EditEventPage } from "../pages/calc/event/:id";
-import { PayPage } from "../pages/calc/pay";
-import { NotFoundPage } from "../pages/notfound";
+import { SigninPage } from "@/pages/signin";
+import { Layout } from "@/pages/layout";
+import { CalcPage } from "@/pages/calc";
+import { EventPage } from "@/pages/calc/event";
+import { CreateEventPage } from "@/pages/calc/event/create";
+import { EditEventPage } from "@/pages/calc/event/:id";
+import { PayPage } from "@/pages/calc/pay";
+import { NotFoundPage } from "@/pages/notfound";
 import { Suspense } from "react";
 import { Center, VStack, Heading, CircularProgress } from "@chakra-ui/react";
-import { UserProfilePage } from "../pages/profile";
+import { UserProfilePage } from "@/pages/profile";
 
 export const router = createBrowserRouter([
   {
