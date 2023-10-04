@@ -12,7 +12,7 @@ import {
   HStack,
   Button,
 } from "@chakra-ui/react";
-import { useUsers } from "../hooks/useUsers";
+import { useUsers } from "@/hooks/useUsers";
 import { AiOutlineRight } from "react-icons/ai";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useEffect } from "react";

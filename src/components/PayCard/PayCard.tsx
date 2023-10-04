@@ -1,5 +1,5 @@
 import { Avatar, Box, Heading, HStack, Stack } from "@chakra-ui/react";
-import { User } from "../types/user";
+import { User } from "@/types";
 
 export const PayCard = ({ user, amount }: { user: User; amount: number }) => {
   return (

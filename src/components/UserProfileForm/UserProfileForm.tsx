@@ -13,8 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useAuth } from "../hooks/useAuth";
-import { User } from "../types/user";
+import { useAuth } from "@/hooks/useAuth";
+import { User } from "@/types";
 
 export const UserProfileForm = () => {
   const toast = useToast();

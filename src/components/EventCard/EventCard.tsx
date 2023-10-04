@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { useCalcEvent } from "../hooks/useCalcEvent";
-import { useCalcEvents } from "../hooks/useCalcEvents";
-import { useUsers } from "../hooks/useUsers";
+import { useAuth } from "@/hooks/useAuth";
+import { useCalcEvent } from "@/hooks/useCalcEvent";
+import { useCalcEvents } from "@/hooks/useCalcEvents";
+import { useUsers } from "@/hooks/useUsers";
 
 export const EventCard = ({ eventId }: { eventId: string }) => {
   const navigate = useNavigate();

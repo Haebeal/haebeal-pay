@@ -2,9 +2,9 @@ import { collection, getFirestore, getDocs } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { useCallback } from "react";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
-import { User } from "../types/user";
-import { firebase, functions } from "../utils/firebase";
-import { useCalcEvents } from "./useCalcEvents";
+import { User } from "@/types";
+import { firebase, functions } from "@/utils";
+import { useCalcEvents } from "@/hooks/useCalcEvents";
 
 const usersSelector = selector<User[]>({
   key: "usersSelector",

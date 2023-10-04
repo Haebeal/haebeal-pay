@@ -1,6 +1,6 @@
 import { Grid, GridItem } from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
-import { EventForm } from "../../../../components/event-form";
+import { EventForm } from "@/components/EventForm";
 
 export const EditEventPage = () => {
   const { id } = useParams();

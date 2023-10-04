@@ -12,9 +12,9 @@ import {
   useRecoilRefresher_UNSTABLE,
   useRecoilValue,
 } from "recoil";
-import { CalcEvent } from "../types/calc-event";
-import { firebase } from "../utils/firebase";
-import { useCalcEvents } from "./useCalcEvents";
+import { CalcEvent } from "@/types";
+import { firebase } from "@/utils";
+import { useCalcEvents } from "@/hooks/useCalcEvents";
 
 export const calcEventIdsState = atom<string[]>({
   key: "eventIdsState",

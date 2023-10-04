@@ -13,8 +13,8 @@ import {
 import { useRef } from "react";
 import { MdMenu } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { routes } from "../utils/routes";
+import { useAuth } from "@/hooks/useAuth";
+import { routes } from "@/utils";
 
 export const Navigator = () => {
   const location = useLocation();

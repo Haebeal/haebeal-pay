@@ -11,8 +11,8 @@ import {
 } from "firebase/firestore";
 import { useCallback } from "react";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
-import { CalcEvent } from "../types/calc-event";
-import { firebase } from "../utils/firebase";
+import { CalcEvent } from "@/types";
+import { firebase } from "@/utils";
 
 const calcEventsSelector = selector<CalcEvent[]>({
   key: "calcEventsSelector",
