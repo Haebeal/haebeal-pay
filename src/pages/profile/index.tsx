@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import { UserProfileForm } from "../../../components/user-profile-form";
+import { UserProfileForm } from "../../components/user-profile-form";
 
 export const UserProfilePage = () => {
   return (

@@ -9,7 +9,7 @@ import { PayPage } from "../pages/calc/pay";
 import { NotFoundPage } from "../pages/notfound";
 import { Suspense } from "react";
 import { Center, VStack, Heading, CircularProgress } from "@chakra-ui/react";
-import { UserProfilePage } from "../pages/user/profile";
+import { UserProfilePage } from "../pages/profile";
 
 export const router = createBrowserRouter([
   {
