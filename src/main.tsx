@@ -1,4 +1,4 @@
-import { ChakraProvider, CircularProgress } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
@@ -14,11 +14,7 @@ root.render(
   <React.StrictMode>
     <RecoilRoot>
       <ChakraProvider theme={customTheme}>
-        <React.Suspense
-          fallback={<CircularProgress isIndeterminate color="twitter.500" />}
-        >
-          <RouterProvider router={router} />
-        </React.Suspense>
+        <RouterProvider router={router} />
       </ChakraProvider>
     </RecoilRoot>
   </React.StrictMode>
