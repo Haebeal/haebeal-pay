@@ -10,8 +10,8 @@ import {
 } from "firebase/auth";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
 import { useCallback } from "react";
-import { auth } from "../utils/firebase";
-import { useUsers } from "./useUsers";
+import { auth } from "@/utils";
+import { useUsers } from "@/hooks/useUsers";
 
 const authSelector = selector<User | null>({
   key: "authSelector",
