@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import { SigninPage } from "../pages/signin";
-import { Layout } from "../pages/laout";
+import { Layout } from "../pages/layout";
 import { CalcPage } from "../pages/calc";
 import { EventPage } from "../pages/calc/event";
 import { CreateEventPage } from "../pages/calc/event/create";
