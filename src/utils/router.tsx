@@ -9,6 +9,7 @@ import { PayPage } from "../pages/calc/pay";
 import { NotFoundPage } from "../pages/notfound";
 import { Suspense } from "react";
 import { Center, VStack, Heading, CircularProgress } from "@chakra-ui/react";
+import { UserProfilePage } from "../pages/profile";
 
 export const router = createBrowserRouter([
   {
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "pay",
         element: <PayPage />,
+      },
+      {
+        path: "profile",
+        element: <UserProfilePage />,
       },
       {
         path: "*",
