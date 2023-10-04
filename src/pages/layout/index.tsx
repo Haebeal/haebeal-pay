@@ -1,8 +1,8 @@
 import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { Box, Container, IconButton } from "@chakra-ui/react";
-import { Header } from "../../organisms/header";
 import { AddIcon } from "@chakra-ui/icons";
+import { Header } from "../../components/header";
 
 export const Layout = () => {
   const { currentUser } = useAuth();

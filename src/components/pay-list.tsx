@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useAuth } from "../hooks/useAuth";
 import { useCalcEvents } from "../hooks/useCalcEvents";
 import { useUsers } from "../hooks/useUsers";
-import { PayCard } from "../molecules/pay-card";
+import { PayCard } from "./pay-card";
 
 export const PayList = () => {
   const { users, refreshUsers } = useUsers();

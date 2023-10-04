@@ -3,4 +3,4 @@ export interface User {
   name: string;
   photoURL: string;
   tmp: boolean;
-};
+}

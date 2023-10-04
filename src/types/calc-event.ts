@@ -6,5 +6,5 @@ export interface CalcEvent {
   sum_amount: number;
   create_user: string;
   event_date: string;
-  distributions: Distribution[]
-};
+  distributions: Distribution[];
+}
