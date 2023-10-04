@@ -1,4 +1,11 @@
-import { Center, Divider, Heading, Skeleton, VStack } from "@chakra-ui/react";
+import {
+  Center,
+  CircularProgress,
+  Divider,
+  Heading,
+  Skeleton,
+  VStack,
+} from "@chakra-ui/react";
 import {
   collection,
   getFirestore,
@@ -8,7 +15,6 @@ import {
 } from "firebase/firestore";
 import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { LoadingAnimaton } from "../atoms/loading-animation";
 import { calcEventIdsState } from "../hooks/useCalcEvent";
 import { EventCard } from "../molecules/event-card";
 import { firebase } from "../utils/firebase";
@@ -38,9 +44,7 @@ export const EventsList = () => {
       </Heading>
       <Divider />
       {isLoading ? (
-        <Center h={300}>
-          <LoadingAnimaton />
-        </Center>
+        <CircularProgress isIndeterminate color="twitter.500" />
       ) : (
         <>
           {eventIds.length > 0 ? (
