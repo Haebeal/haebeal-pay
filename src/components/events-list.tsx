@@ -16,7 +16,7 @@ import {
 import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { calcEventIdsState } from "../hooks/useCalcEvent";
-import { EventCard } from "../molecules/event-card";
+import { EventCard } from "../components/event-card";
 import { firebase } from "../utils/firebase";
 
 export const EventsList = () => {

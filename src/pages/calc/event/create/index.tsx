@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import { EventForm } from "../../../../organisms/event-form";
+import { EventForm } from "../../../../components/event-form";
 
 export const CreateEventPage = () => {
   return (
