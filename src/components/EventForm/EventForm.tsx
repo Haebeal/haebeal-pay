@@ -14,10 +14,10 @@ import {
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useCalcEvent } from "../hooks/useCalcEvent";
-import { useCalcEvents } from "../hooks/useCalcEvents";
-import { useUsers } from "../hooks/useUsers";
-import { CalcEvent } from "../types/calc-event";
+import { useCalcEvent } from "@/hooks/useCalcEvent";
+import { useCalcEvents } from "@/hooks/useCalcEvents";
+import { useUsers } from "@/hooks/useUsers";
+import { CalcEvent } from "@/types";
 
 export const EventForm = ({ eventId }: { eventId?: string }) => {
   const navigate = useNavigate();

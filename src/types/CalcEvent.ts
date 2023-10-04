@@ -1,4 +1,4 @@
-import { Distribution } from "./distribution";
+import { Distribution } from "@/types";
 
 export interface CalcEvent {
   id: string;

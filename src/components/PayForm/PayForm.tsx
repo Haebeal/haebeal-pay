@@ -14,10 +14,10 @@ import {
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { useCalcEvents } from "../hooks/useCalcEvents";
-import { useUsers } from "../hooks/useUsers";
-import { CalcEvent } from "../types/calc-event";
+import { useAuth } from "@/hooks/useAuth";
+import { useCalcEvents } from "@/hooks/useCalcEvents";
+import { useUsers } from "@/hooks/useUsers";
+import { CalcEvent } from "@/types";
 
 export const PayForm = () => {
   const navigate = useNavigate();

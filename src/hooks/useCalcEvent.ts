@@ -12,7 +12,7 @@ import {
   useRecoilRefresher_UNSTABLE,
   useRecoilValue,
 } from "recoil";
-import { CalcEvent } from "../types/calc-event";
+import { CalcEvent } from "../types/CalcEvent";
 import { firebase } from "../utils/firebase";
 import { useCalcEvents } from "./useCalcEvents";
 

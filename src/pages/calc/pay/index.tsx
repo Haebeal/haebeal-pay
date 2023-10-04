@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import { PayForm } from "../../../components/pay-form";
+import { PayForm } from "@/components/PayForm";
 
 export const PayPage = () => {
   return (

@@ -2,7 +2,7 @@ import { collection, getFirestore, getDocs } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import { useCallback } from "react";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
-import { User } from "../types/user";
+import { User } from "../types/User";
 import { firebase, functions } from "../utils/firebase";
 import { useCalcEvents } from "./useCalcEvents";
 

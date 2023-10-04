@@ -15,9 +15,9 @@ import {
 } from "firebase/firestore";
 import { Suspense, useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
-import { calcEventIdsState } from "../hooks/useCalcEvent";
-import { EventCard } from "../components/event-card";
-import { firebase } from "../utils/firebase";
+import { calcEventIdsState } from "@/hooks/useCalcEvent";
+import { EventCard } from "@/components/EventCard";
+import { firebase } from "@/utils";
 
 export const EventsList = () => {
   const [isLoading, setLoading] = useState(true);

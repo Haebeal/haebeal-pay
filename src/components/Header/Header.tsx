@@ -13,9 +13,9 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
-import { routes } from "../utils/routes";
-import { Navigator } from "./navigator";
+import { useAuth } from "@/hooks/useAuth";
+import { routes } from "@/utils";
+import { Navigator } from "@/components/Navigator";
 
 export const Header = () => {
   const location = useLocation();

@@ -1,9 +1,9 @@
 import { Divider, Heading, VStack } from "@chakra-ui/react";
 import { useEffect } from "react";
-import { useAuth } from "../hooks/useAuth";
-import { useCalcEvents } from "../hooks/useCalcEvents";
-import { useUsers } from "../hooks/useUsers";
-import { PayCard } from "./pay-card";
+import { useAuth } from "@/hooks/useAuth";
+import { useCalcEvents } from "@/hooks/useCalcEvents";
+import { useUsers } from "@/hooks/useUsers";
+import { PayCard } from "@/components/PayCard";
 
 export const PayList = () => {
   const { users, refreshUsers } = useUsers();
