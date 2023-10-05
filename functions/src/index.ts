@@ -1,6 +1,5 @@
-import { onRequest, onCall } from "firebase-functions/v2/https";
+import { onCall } from "firebase-functions/v2/https";
 import { auth } from "firebase-functions/v1";
-import * as logger from "firebase-functions/logger";
 import { initializeApp } from "firebase-admin";
 import { getFirestore } from "firebase-admin/firestore";
 import { getAuth } from "firebase-admin/auth";
