@@ -1,17 +1,17 @@
 import {
-  browserLocalPersistence,
   GoogleAuthProvider,
+  linkWithPopup,
   onAuthStateChanged,
-  setPersistence,
-  signInWithRedirect,
+  signInWithPopup,
   signOut,
-  updateProfile,
+  unlink,
   User,
 } from "firebase/auth";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
 import { useCallback } from "react";
-import { auth } from "@/utils";
+import { auth, firestore } from "@/utils";
 import { useUsers } from "@/hooks/useUsers";
+import { doc, updateDoc } from "firebase/firestore";
 
 const authSelector = selector<User | null>({
   key: "authSelector",
@@ -34,13 +34,8 @@ export const useAuth = () => {
 
   const signin = useCallback(async () => {
     const provider = new GoogleAuthProvider();
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => {
-        return signInWithRedirect(auth, provider);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    await signInWithPopup(auth, provider);
+    refreshCurrentUser();
   }, []);
 
   const signout = useCallback(async () => {
@@ -57,7 +52,8 @@ export const useAuth = () => {
       photoURL: string;
     }) => {
       if (currentUser) {
-        await updateProfile(currentUser, {
+        const docRef = doc(firestore, "profiles", currentUser.uid);
+        await updateDoc(docRef, {
           displayName: displayName,
           photoURL: photoURL,
         });
@@ -68,11 +64,20 @@ export const useAuth = () => {
     []
   );
 
+  const changeGoogleLink = useCallback(async () => {
+    if (currentUser) {
+      const provider = new GoogleAuthProvider();
+      await unlink(currentUser, provider.providerId);
+      await linkWithPopup(currentUser, provider);
+    }
+  }, []);
+
   return {
     currentUser,
     signin,
     signout,
     updateUserProfile,
+    changeGoogleLink,
     refreshCurrentUser,
   };
 };
