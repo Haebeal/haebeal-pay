@@ -1,9 +1,9 @@
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
-import { User } from "@/types";
+import type { Profile } from "@/types";
 import { firestore } from "@/utils";
 import { collection, getDocs, query } from "firebase/firestore";
 
-const usersSelector = selector<User[]>({
+const usersSelector = selector<Profile[]>({
   key: "usersSelector",
   get: async () => {
     const collectionRef = collection(firestore, "profiles");
@@ -12,9 +12,9 @@ const usersSelector = selector<User[]>({
       id: doc.id,
       name: doc.data().displayName,
       photoURL: doc.data().photoURL,
-      bankCode: "",
-      branchCode: "",
-      accountCode: "",
+      bankCode: doc.data().bankCode,
+      branchCode: doc.data().branchCode,
+      accountCode: doc.data().accountCode,
     }));
   },
 });

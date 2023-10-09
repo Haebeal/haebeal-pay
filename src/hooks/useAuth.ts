@@ -10,6 +10,7 @@ import {
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
 import { useCallback } from "react";
 import { auth, firestore } from "@/utils";
+import type { Profile } from "@/types";
 import { useUsers } from "@/hooks/useUsers";
 import { doc, updateDoc } from "firebase/firestore";
 
@@ -44,26 +45,14 @@ export const useAuth = () => {
     refreshCurrentUser();
   }, []);
 
-  const updateUserProfile = useCallback(
-    async ({
-      displayName,
-      photoURL,
-    }: {
-      displayName: string;
-      photoURL: string;
-    }) => {
-      if (currentUser) {
-        const docRef = doc(firestore, "profiles", currentUser.uid);
-        await updateDoc(docRef, {
-          displayName: displayName,
-          photoURL: photoURL,
-        });
-        refreshCurrentUser();
-        refreshUsers();
-      }
-    },
-    []
-  );
+  const updateUserProfile = useCallback(async (data: Profile) => {
+    if (currentUser) {
+      const docRef = doc(firestore, "profiles", currentUser.uid);
+      await updateDoc(docRef, data as any);
+      refreshCurrentUser();
+      refreshUsers();
+    }
+  }, []);
 
   const changeGoogleLink = useCallback(async () => {
     if (currentUser) {

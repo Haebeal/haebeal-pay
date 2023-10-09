@@ -16,8 +16,9 @@ import {
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
-import { User } from "@/types";
+import type { Profile } from "@/types";
 import { FaGoogle } from "react-icons/fa";
+import { useUsers } from "@/hooks/useUsers";
 
 export const UserProfileForm = () => {
   const toast = useToast();
@@ -28,6 +29,7 @@ export const UserProfileForm = () => {
     changeGoogleLink,
     refreshCurrentUser,
   } = useAuth();
+  const { users, refreshUsers } = useUsers();
 
   const linkOtherAccount = async () => {
     await changeGoogleLink();
@@ -43,13 +45,11 @@ export const UserProfileForm = () => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<User>();
-  const onSubmit: SubmitHandler<User> = async (formData) => {
+  } = useForm<Profile>();
+  const onSubmit: SubmitHandler<Profile> = async (formData) => {
     setLoading(true);
-    await updateUserProfile({
-      displayName: formData.name,
-      photoURL: formData.photoURL,
-    });
+    await updateUserProfile(formData);
+    refreshUsers();
     toast({
       title: "更新しました",
       status: "success",
@@ -64,9 +64,15 @@ export const UserProfileForm = () => {
       id: currentUser?.uid,
       name: currentUser?.displayName ?? "",
       photoURL: currentUser?.photoURL ?? "",
+      bankCode:
+        users.find((user) => user.id === currentUser?.uid)?.bankCode ?? "",
+      branchCode:
+        users.find((user) => user.id === currentUser?.uid)?.branchCode ?? "",
+      accountCode:
+        users.find((user) => user.id === currentUser?.uid)?.accountCode ?? "",
     });
     setLoading(false);
-  }, []);
+  }, [currentUser, users]);
 
   const banks: {
     code: string;
@@ -78,6 +84,7 @@ export const UserProfileForm = () => {
     },
   ];
   const [branchName, setBranchName] = useState<string>("");
+  const branchCode = watch("branchCode");
   const getBranch = async () => {
     const bankCode = watch("bankCode");
     if (bankCode === "") {
@@ -87,7 +94,6 @@ export const UserProfileForm = () => {
       });
       return;
     }
-    const branchCode = watch("branchCode");
     if (branchCode === "") {
       toast({
         status: "error",
@@ -114,6 +120,11 @@ export const UserProfileForm = () => {
       });
     }
   };
+  useEffect(() => {
+    if (branchCode !== undefined && branchName === "") {
+      getBranch();
+    }
+  }, [branchCode]);
 
   return (
     <Skeleton isLoaded={!isLoading}>
