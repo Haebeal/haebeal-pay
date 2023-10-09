@@ -63,16 +63,12 @@ export const useCalcEvent = (eventId: string | undefined) => {
     async (data: CalcEvent): Promise<void> => {
       if (eventId) {
         const docRef = doc(getFirestore(firebase), "calc_events", eventId);
-        try {
-          await setDoc(docRef, {
-            ...data,
-            event_date: Timestamp.fromDate(new Date(data.event_date)),
-          });
-          refreshCalcEvent();
-          refreshCalcEvents();
-        } catch (e) {
-          throw e;
-        }
+        await setDoc(docRef, {
+          ...data,
+          event_date: Timestamp.fromDate(new Date(data.event_date)),
+        });
+        refreshCalcEvent();
+        refreshCalcEvents();
       }
     },
     []

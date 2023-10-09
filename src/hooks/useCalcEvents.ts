@@ -47,28 +47,20 @@ export const useCalcEvents = () => {
   const addCalcEvent = useCallback(
     async (data: CalcEvent): Promise<string | null> => {
       const collectionRef = collection(getFirestore(firebase), "calc_events");
-      try {
-        const { id } = await addDoc(collectionRef, {
-          ...data,
-          event_date: Timestamp.fromDate(new Date(data.event_date)),
-        });
-        refreshCalcEvents();
-        return id;
-      } catch (e) {
-        throw e;
-      }
+      const { id } = await addDoc(collectionRef, {
+        ...data,
+        event_date: Timestamp.fromDate(new Date(data.event_date)),
+      });
+      refreshCalcEvents();
+      return id;
     },
     []
   );
 
   const deleteEvent = useCallback(async (eventId: string): Promise<void> => {
-    try {
-      const docRef = doc(getFirestore(firebase), "calc_events", eventId);
-      await deleteDoc(docRef);
-      refreshCalcEvents();
-    } catch (e) {
-      throw e;
-    }
+    const docRef = doc(getFirestore(firebase), "calc_events", eventId);
+    await deleteDoc(docRef);
+    refreshCalcEvents();
   }, []);
 
   return { calcEvents, addCalcEvent, deleteEvent, refreshCalcEvents };
