@@ -15,11 +15,17 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import { User } from "@/types";
+import { FaGoogle } from "react-icons/fa";
 
 export const UserProfileForm = () => {
   const toast = useToast();
   const [isLoading, setLoading] = useState(true);
-  const { currentUser, updateUserProfile, refreshCurrentUser } = useAuth();
+  const {
+    currentUser,
+    updateUserProfile,
+    changeGoogleLink,
+    refreshCurrentUser,
+  } = useAuth();
 
   const {
     register,
@@ -107,6 +113,26 @@ export const UserProfileForm = () => {
               type="text"
               required
             />
+          </Stack>
+        </FormControl>
+        <FormControl isInvalid={errors.photoURL ? true : false}>
+          <Stack direction={{ base: "column", md: "row" }}>
+            <Heading
+              w={{ base: "", md: "30%" }}
+              as={FormLabel}
+              pt={2}
+              size="sm"
+              noOfLines={1}
+            >
+              Google連携
+            </Heading>
+            <Button
+              leftIcon={<FaGoogle />}
+              colorScheme="twitter"
+              onClick={changeGoogleLink}
+            >
+              別アカウントを連携
+            </Button>
           </Stack>
         </FormControl>
         <FormControl isInvalid={errors.photoURL ? true : false}>

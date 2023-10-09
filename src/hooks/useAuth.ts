@@ -1,10 +1,12 @@
 import {
   browserLocalPersistence,
   GoogleAuthProvider,
+  linkWithRedirect,
   onAuthStateChanged,
   setPersistence,
   signInWithRedirect,
   signOut,
+  unlink,
   User,
 } from "firebase/auth";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
@@ -69,11 +71,20 @@ export const useAuth = () => {
     []
   );
 
+  const changeGoogleLink = useCallback(async () => {
+    if (currentUser) {
+      const provider = new GoogleAuthProvider();
+      await unlink(currentUser, provider.providerId);
+      await linkWithRedirect(currentUser, provider);
+    }
+  }, []);
+
   return {
     currentUser,
     signin,
     signout,
     updateUserProfile,
+    changeGoogleLink,
     refreshCurrentUser,
   };
 };
