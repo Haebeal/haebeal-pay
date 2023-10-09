@@ -5,8 +5,8 @@ import {
   FormLabel,
   Heading,
   Input,
-  Link,
   Skeleton,
+  Spacer,
   Stack,
   useToast,
   VStack,
@@ -26,6 +26,14 @@ export const UserProfileForm = () => {
     changeGoogleLink,
     refreshCurrentUser,
   } = useAuth();
+
+  const linkOtherAccount = async () => {
+    await changeGoogleLink();
+    toast({
+      title: "更新しました",
+      status: "success",
+    });
+  };
 
   const {
     register,
@@ -126,13 +134,30 @@ export const UserProfileForm = () => {
             >
               Google連携
             </Heading>
-            <Button
-              leftIcon={<FaGoogle />}
-              colorScheme="twitter"
-              onClick={changeGoogleLink}
-            >
-              別アカウントを連携
-            </Button>
+            <Stack w="full" direction={{ base: "column", md: "row" }}>
+              <Input
+                w={{ base: "", md: "70%" }}
+                placeholder="Email"
+                value={
+                  currentUser?.providerData.find(
+                    (provider) => provider.providerId === "google.com"
+                  )?.email ?? ""
+                }
+                noOfLines={1}
+                size="md"
+                border="none"
+                type="text"
+                readOnly
+              />
+              <Spacer />
+              <Button
+                leftIcon={<FaGoogle />}
+                colorScheme="twitter"
+                onClick={linkOtherAccount}
+              >
+                別アカウントを連携
+              </Button>
+            </Stack>
           </Stack>
         </FormControl>
         <FormControl isInvalid={errors.photoURL ? true : false}>
@@ -146,16 +171,16 @@ export const UserProfileForm = () => {
             >
               プロフィール画像
             </Heading>
-            <Heading pt={2} size="sm" noOfLines={1}>
-              <Link
-                color="teal.500"
-                href="https://support.google.com/accounts/answer/27442?hl=ja&co=GENIE.Platform%3DDesktop&oco=0"
-                isExternal
-              >
-                本サイト
-              </Link>
-              を参考に変更してください
-            </Heading>
+            <Input
+              placeholder="URLを入力"
+              {...register("photoURL")}
+              noOfLines={1}
+              size="md"
+              bg="gray.200"
+              border="none"
+              type="text"
+              required
+            />
           </Stack>
         </FormControl>
         <Button type="submit" w="80%" colorScheme="twitter">
