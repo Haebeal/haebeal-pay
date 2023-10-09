@@ -12,6 +12,9 @@ const usersSelector = selector<User[]>({
       id: doc.id,
       name: doc.data().displayName,
       photoURL: doc.data().photoURL,
+      bankCode: "",
+      branchCode: "",
+      accountCode: "",
     }));
   },
 });
