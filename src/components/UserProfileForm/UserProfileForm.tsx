@@ -77,6 +77,7 @@ export const UserProfileForm = () => {
       name: "三菱UFJ銀行",
     },
   ];
+  const [branchName, setBranchName] = useState<string>("");
   const getBranch = async () => {
     const bankCode = watch("bankCode");
     if (bankCode === "") {
@@ -95,17 +96,23 @@ export const UserProfileForm = () => {
       return;
     }
     const API_TOKEN = "CNKsD8zZE1qLzPCrzyzDpGLzr2twcCS9eF3xFzM";
-    const response = await fetch(
-      `https://apis.bankcode-jp.com/v3/banks/${bankCode}/branches/${branchCode}`,
-      {
-        method: "POST",
-        headers: {
-          apiKey: API_TOKEN,
-        },
-      }
-    );
-    const result = await response.json();
-    console.log(result);
+    try {
+      const response = await fetch(
+        `https://apis.bankcode-jp.com/v3/banks/${bankCode}/branches/${branchCode}`,
+        {
+          headers: {
+            apiKey: API_TOKEN,
+          },
+        }
+      );
+      const result = await response.json();
+      setBranchName(result.branch.name);
+    } catch (error) {
+      toast({
+        status: "error",
+        title: "支店・出張所が見つかりませんでした",
+      });
+    }
   };
 
   return (
@@ -166,7 +173,7 @@ export const UserProfileForm = () => {
             />
           </Stack>
         </FormControl>
-        <FormControl isInvalid={errors.photoURL ? true : false}>
+        <FormControl>
           <Stack direction={{ base: "column", md: "row" }}>
             <Heading
               w={{ base: "", md: "30%" }}
@@ -272,7 +279,7 @@ export const UserProfileForm = () => {
               <Input
                 maxW={300}
                 placeholder="支店・出張所名"
-                value={""}
+                value={branchName}
                 noOfLines={1}
                 size="md"
                 border="none"
