@@ -1,10 +1,8 @@
 import {
-  browserLocalPersistence,
   GoogleAuthProvider,
   linkWithPopup,
   onAuthStateChanged,
-  setPersistence,
-  signInWithRedirect,
+  signInWithPopup,
   signOut,
   unlink,
   User,
@@ -36,13 +34,8 @@ export const useAuth = () => {
 
   const signin = useCallback(async () => {
     const provider = new GoogleAuthProvider();
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => {
-        return signInWithRedirect(auth, provider);
-      })
-      .catch((error) => {
-        console.error(error.message);
-      });
+    await signInWithPopup(auth, provider);
+    refreshCurrentUser();
   }, []);
 
   const signout = useCallback(async () => {
