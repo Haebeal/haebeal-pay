@@ -34,6 +34,7 @@ export const useAuth = () => {
 
   const signin = useCallback(async () => {
     const provider = new GoogleAuthProvider();
+    provider.addScope("https://www.googleapis.com/auth/userinfo.email");
     await signInWithPopup(auth, provider);
     refreshCurrentUser();
   }, []);
@@ -67,6 +68,7 @@ export const useAuth = () => {
   const changeGoogleLink = useCallback(async () => {
     if (currentUser) {
       const provider = new GoogleAuthProvider();
+      provider.addScope("https://www.googleapis.com/auth/userinfo.email");
       await unlink(currentUser, provider.providerId);
       await linkWithPopup(currentUser, provider);
     }
