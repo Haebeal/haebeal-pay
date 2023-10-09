@@ -5,13 +5,13 @@ import {
   setPersistence,
   signInWithRedirect,
   signOut,
-  updateProfile,
   User,
 } from "firebase/auth";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
 import { useCallback } from "react";
-import { auth } from "@/utils";
+import { auth, firestore } from "@/utils";
 import { useUsers } from "@/hooks/useUsers";
+import { doc, updateDoc } from "firebase/firestore";
 
 const authSelector = selector<User | null>({
   key: "authSelector",
@@ -57,7 +57,8 @@ export const useAuth = () => {
       photoURL: string;
     }) => {
       if (currentUser) {
-        await updateProfile(currentUser, {
+        const docRef = doc(firestore, "profiles", currentUser.uid);
+        await updateDoc(docRef, {
           displayName: displayName,
           photoURL: photoURL,
         });
