@@ -1,7 +1,7 @@
 import {
   browserLocalPersistence,
   GoogleAuthProvider,
-  linkWithRedirect,
+  linkWithPopup,
   onAuthStateChanged,
   setPersistence,
   signInWithRedirect,
@@ -75,7 +75,7 @@ export const useAuth = () => {
     if (currentUser) {
       const provider = new GoogleAuthProvider();
       await unlink(currentUser, provider.providerId);
-      await linkWithRedirect(currentUser, provider);
+      await linkWithPopup(currentUser, provider);
     }
   }, []);
 
