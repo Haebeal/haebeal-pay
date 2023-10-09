@@ -13,8 +13,7 @@ import { customTheme } from "./utils/theme";
 import { router } from "./utils/router";
 import { connectAuthEmulator } from "firebase/auth";
 import { connectFirestoreEmulator } from "firebase/firestore";
-import { connectFunctionsEmulator } from "firebase/functions";
-import { auth, firestore, functions } from "./utils";
+import { auth, firestore } from "./utils";
 
 const container = document.getElementById("root");
 if (!container) throw new Error("Failed to find the root element");
@@ -23,7 +22,6 @@ const root = ReactDOM.createRoot(container);
 if (location.hostname === "localhost") {
   connectAuthEmulator(auth, "http://127.0.0.1:9099");
   connectFirestoreEmulator(firestore, "127.0.0.1", 8080);
-  connectFunctionsEmulator(functions, "127.0.0.1", 5001);
 }
 
 root.render(
