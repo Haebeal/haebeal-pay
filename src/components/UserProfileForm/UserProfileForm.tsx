@@ -137,7 +137,7 @@ export const UserProfileForm = () => {
             <Stack w="full" direction={{ base: "column", md: "row" }}>
               <Input
                 w={{ base: "", md: "70%" }}
-                placeholder="ユーザーID"
+                placeholder="Email"
                 value={
                   currentUser?.providerData.find(
                     (provider) => provider.providerId === "google.com"
