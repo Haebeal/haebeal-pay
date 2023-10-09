@@ -5,16 +5,6 @@ admin.initializeApp();
 const firestore = admin.firestore();
 const auth = admin.auth();
 
-exports.getUsers = functions.https.onCall(async () => {
-  const listUsers = await auth.listUsers();
-  return listUsers.users.map((user) => ({
-    id: user.uid,
-    name: user.displayName ?? "",
-    photoURL: user.photoURL ?? "",
-    tmp: false,
-  }));
-});
-
 // Firebase Authでユーザー作成時に発火
 exports.onCreateUser = functions.auth.user().onCreate((user) => {
   // profiles コレクションにユーザー情報の追加を行う
