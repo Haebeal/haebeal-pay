@@ -4,10 +4,12 @@ import {
   FormControl,
   FormLabel,
   Heading,
+  HStack,
   Input,
   Select,
   Skeleton,
   Stack,
+  Switch,
   useToast,
   VStack,
 } from "@chakra-ui/react";
@@ -45,10 +47,11 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
         .join("-"),
     },
   });
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     control,
     name: "distributions",
   });
+  const [disableFields, setDisableFields] = useState<string[]>([]);
   const onSubmit: SubmitHandler<CalcEvent> = async (formData) => {
     setLoading(true);
     if (eventId) {
@@ -85,6 +88,37 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
         setLoading(false);
       }
     }
+  };
+
+  const splitEvenly = () => {
+    if (watch("create_user") === "") {
+      toast({
+        title: "支払った人を選択してください",
+        status: "error",
+      });
+      return;
+    }
+    if (watch("sum_amount").toString() === "") {
+      toast({
+        title: "支払い総額を入力してください",
+        status: "error",
+      });
+      return;
+    }
+    const amount = watch("sum_amount") / (users.length - disableFields.length);
+    fields.forEach((field, index) => {
+      if (disableFields.includes(field.userId)) {
+        update(index, {
+          userId: field.userId,
+          amount: 0,
+        });
+      } else {
+        update(index, {
+          userId: field.userId,
+          amount: amount,
+        });
+      }
+    });
   };
 
   useEffect(() => {
@@ -251,19 +285,24 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
             >
               支払い料金
             </Heading>
-            <Input
-              placeholder="支払い料金"
-              value={payAmount}
-              readOnly
-              size="md"
-              bg="gray.100"
-              color="gray"
-              border="none"
-              type="number"
-            />
+            <Stack direction="row" w="full">
+              <Input
+                placeholder="支払い料金"
+                value={payAmount}
+                readOnly
+                size="md"
+                bg="gray.100"
+                color="gray"
+                border="none"
+                type="number"
+              />
+              <Button colorScheme="twitter" onClick={splitEvenly}>
+                割り勘
+              </Button>
+            </Stack>
           </Stack>
         </FormControl>
-        {fields.map((field, ind) => (
+        {fields.map((field, index) => (
           <FormControl key={field.id}>
             <Stack direction={{ base: "column", md: "row" }}>
               <Heading
@@ -275,15 +314,42 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
               >
                 {users.find((user) => user.id === field.userId)?.name}
               </Heading>
-              <Input
-                placeholder="支払額"
-                {...register(`distributions.${ind}.amount`)}
-                size="md"
-                bg="gray.200"
-                border="none"
-                type="number"
-                min={0}
-              />
+              <HStack direction="row" w="full">
+                <Input
+                  placeholder="支払額"
+                  {...register(`distributions.${index}.amount`)}
+                  size="md"
+                  bg={
+                    disableFields.includes(field.userId)
+                      ? "gray.100"
+                      : "gray.200"
+                  }
+                  border="none"
+                  color={disableFields.includes(field.userId) ? "gray" : ""}
+                  type="number"
+                  min={0}
+                  readOnly={disableFields.includes(field.userId)}
+                />
+                <Switch
+                  size="lg"
+                  isChecked={!disableFields.includes(field.userId)}
+                  onChange={(event) => {
+                    if (event.currentTarget.checked) {
+                      setDisableFields(
+                        disableFields.filter(
+                          (element) => element !== field.userId
+                        )
+                      );
+                    } else {
+                      setDisableFields(disableFields.concat(field.userId));
+                      update(index, {
+                        userId: field.userId,
+                        amount: 0,
+                      });
+                    }
+                  }}
+                />
+              </HStack>
             </Stack>
           </FormControl>
         ))}
