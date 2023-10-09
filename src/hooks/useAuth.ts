@@ -71,6 +71,7 @@ export const useAuth = () => {
       provider.addScope("https://www.googleapis.com/auth/userinfo.email");
       await unlink(currentUser, provider.providerId);
       await linkWithPopup(currentUser, provider);
+      refreshCurrentUser();
     }
   }, []);
 
