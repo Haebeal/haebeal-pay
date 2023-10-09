@@ -23,9 +23,6 @@ export const SigninPage = () => {
         <Box gap={4} minW="75%" bg="white" rounded="md" px={14} py={10}>
           <VStack gap={3}>
             <Heading size="lg">Hebel Site</Heading>
-            <Heading size="xs" color="gray">
-              @hebel.pwでログインしてください
-            </Heading>
             <Divider />
             <Button minW="80%" colorScheme="twitter" onClick={signin}>
               Googleでログイン
