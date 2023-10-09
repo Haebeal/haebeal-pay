@@ -7,6 +7,7 @@ import {
   Input,
   Link,
   Skeleton,
+  Spacer,
   Stack,
   useToast,
   VStack,
@@ -126,13 +127,30 @@ export const UserProfileForm = () => {
             >
               Google連携
             </Heading>
-            <Button
-              leftIcon={<FaGoogle />}
-              colorScheme="twitter"
-              onClick={changeGoogleLink}
-            >
-              別アカウントを連携
-            </Button>
+            <Stack w="full" direction={{ base: "column", md: "row" }}>
+              <Input
+                w={{ base: "", md: "70%" }}
+                placeholder="ユーザーID"
+                value={
+                  currentUser?.providerData.find(
+                    (provider) => provider.providerId === "google.com"
+                  )?.email ?? ""
+                }
+                noOfLines={1}
+                size="md"
+                border="none"
+                type="text"
+                readOnly
+              />
+              <Spacer />
+              <Button
+                leftIcon={<FaGoogle />}
+                colorScheme="twitter"
+                onClick={changeGoogleLink}
+              >
+                別アカウントを連携
+              </Button>
+            </Stack>
           </Stack>
         </FormControl>
         <FormControl isInvalid={errors.photoURL ? true : false}>
