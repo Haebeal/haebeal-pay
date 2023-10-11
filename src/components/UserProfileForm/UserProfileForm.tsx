@@ -21,6 +21,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { Profile } from "@/types";
 import { FaGoogle } from "react-icons/fa";
 import { useUsers } from "@/hooks/useUsers";
+import { useBank } from "@/hooks/useBank";
 
 export const UserProfileForm = () => {
   const toast = useToast();
@@ -32,6 +33,7 @@ export const UserProfileForm = () => {
     refreshCurrentUser,
   } = useAuth();
   const { users } = useUsers();
+  const { banks } = useBank();
 
   const linkOtherAccount = async () => {
     await changeGoogleLink();
@@ -95,23 +97,6 @@ export const UserProfileForm = () => {
     setLoading(false);
   }, []);
 
-  const banks: {
-    code: string;
-    name: string;
-  }[] = [
-    {
-      code: "0001",
-      name: "みずほ銀行",
-    },
-    {
-      code: "0005",
-      name: "三菱UFJ銀行",
-    },
-    {
-      code: "1250",
-      name: "埼玉縣信用金庫",
-    },
-  ];
   const getBranch = async () => {
     const bankCode = watch("bankCode");
     if (bankCode === "") {
