@@ -123,7 +123,7 @@ export const PayForm = () => {
                 .filter((user) => user.id !== currentUser?.uid)
                 .map((user) => (
                   <option key={user.id} value={user.id}>
-                    {user.name}
+                    {user.displayName}
                   </option>
                 ))}
             </Select>

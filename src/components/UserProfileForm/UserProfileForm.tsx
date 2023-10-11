@@ -1,10 +1,14 @@
 import {
   Button,
   Divider,
+  Flex,
   FormControl,
+  FormErrorMessage,
   FormLabel,
   Heading,
+  HStack,
   Input,
+  Select,
   Skeleton,
   Spacer,
   Stack,
@@ -14,8 +18,9 @@ import {
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
-import { User } from "@/types";
+import { Profile } from "@/types";
 import { FaGoogle } from "react-icons/fa";
+import { useUsers } from "@/hooks/useUsers";
 
 export const UserProfileForm = () => {
   const toast = useToast();
@@ -26,6 +31,7 @@ export const UserProfileForm = () => {
     changeGoogleLink,
     refreshCurrentUser,
   } = useAuth();
+  const { users } = useUsers();
 
   const linkOtherAccount = async () => {
     await changeGoogleLink();
@@ -39,31 +45,114 @@ export const UserProfileForm = () => {
     register,
     reset,
     handleSubmit,
+    watch,
+    setValue,
+    setError,
     formState: { errors },
-  } = useForm<User>();
-  const onSubmit: SubmitHandler<User> = async (formData) => {
+  } = useForm<Profile>();
+  const onSubmit: SubmitHandler<Profile> = async (formData) => {
     setLoading(true);
-    await updateUserProfile({
-      displayName: formData.name,
-      photoURL: formData.photoURL,
-    });
-    toast({
-      title: "更新しました",
-      status: "success",
-    });
-    setLoading(false);
+    const API_TOKEN = import.meta.env.VITE_BANK_CODE_JP_TOKEN;
+    try {
+      if (formData.branchCode && formData.branchName) {
+        const response = await fetch(
+          `https://apis.bankcode-jp.com/v3/banks/${formData.bankCode}/branches/${formData.branchCode}`,
+          {
+            method: "GET",
+            headers: {
+              apiKey: API_TOKEN,
+            },
+          }
+        );
+        const result = await response.json();
+        if (result.branch.name !== formData.branchName) {
+          throw new Error("");
+        }
+      }
+      await updateUserProfile(formData);
+      toast({
+        title: "更新しました",
+        status: "success",
+      });
+    } catch (error) {
+      setError("branchCode", {
+        message: "正しい店番を入力して下さい",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     refreshCurrentUser();
     setLoading(true);
-    reset({
-      id: currentUser?.uid,
-      name: currentUser?.displayName ?? "",
-      photoURL: currentUser?.photoURL ?? "",
-    });
+    const currentUserProfile = users.find(
+      (user) => user.id === currentUser?.uid
+    );
+    if (currentUserProfile) {
+      reset(currentUserProfile);
+    }
     setLoading(false);
   }, []);
+
+  const banks: {
+    code: string;
+    name: string;
+  }[] = [
+    {
+      code: "0001",
+      name: "みずほ銀行",
+    },
+    {
+      code: "0005",
+      name: "三菱UFJ銀行",
+    },
+    {
+      code: "1250",
+      name: "埼玉縣信用金庫",
+    },
+  ];
+  const getBranch = async () => {
+    const bankCode = watch("bankCode");
+    if (bankCode === "") {
+      toast({
+        status: "error",
+        title: "金融機関を選択してください",
+      });
+      return;
+    }
+    const branchCode = watch("branchCode");
+    if (branchCode === "") {
+      setValue("branchName", "");
+      return;
+    }
+    const API_TOKEN = import.meta.env.VITE_BANK_CODE_JP_TOKEN;
+    try {
+      const response = await fetch(
+        `https://apis.bankcode-jp.com/v3/banks/${bankCode}/branches/${branchCode}`,
+        {
+          method: "GET",
+          headers: {
+            apiKey: API_TOKEN,
+          },
+        }
+      );
+      const result = await response.json();
+      setValue("branchName", result.branch.name);
+    } catch (error) {
+      setValue("branchName", "");
+      toast({
+        status: "error",
+        title: "支店・出張所名を取得できませんでした",
+      });
+    }
+  };
+  const clearBankInfo = () => {
+    setValue("bankCode", "");
+    setValue("branchCode", "");
+    setValue("branchName", "");
+    setValue("accountCode", "");
+  };
 
   return (
     <Skeleton isLoaded={!isLoading}>
@@ -100,7 +189,7 @@ export const UserProfileForm = () => {
             />
           </Stack>
         </FormControl>
-        <FormControl isInvalid={errors.name ? true : false}>
+        <FormControl isInvalid={errors.displayName ? true : false}>
           <Stack direction={{ base: "column", md: "row" }}>
             <Heading
               w={{ base: "", md: "30%" }}
@@ -113,7 +202,7 @@ export const UserProfileForm = () => {
             </Heading>
             <Input
               placeholder="ユーザー名"
-              {...register("name")}
+              {...register("displayName")}
               noOfLines={1}
               size="md"
               bg="gray.200"
@@ -183,7 +272,130 @@ export const UserProfileForm = () => {
             />
           </Stack>
         </FormControl>
-        <Button type="submit" w="80%" colorScheme="twitter">
+        <Divider />
+        <Heading w={{ base: "" }} pt={2} size="sm" noOfLines={1}>
+          振込先情報
+        </Heading>
+        <FormControl isInvalid={errors.bankCode ? true : false}>
+          <Stack direction={{ base: "column", md: "row" }}>
+            <Heading
+              w={{ base: "", md: "30%" }}
+              as={FormLabel}
+              pt={2}
+              size="sm"
+              noOfLines={1}
+            >
+              金融機関
+            </Heading>
+            <Select
+              placeholder="金融機関を選択"
+              {...register("bankCode", {
+                validate: (data) => {
+                  if (!data && (watch("branchCode") || watch("accountCode")))
+                    return "金融機関を選択してください";
+                },
+              })}
+              size="md"
+              bg="gray.200"
+              border="none"
+            >
+              {banks.map((bank) => (
+                <option key={bank.code} value={bank.code}>
+                  {bank.name}
+                </option>
+              ))}
+            </Select>
+          </Stack>
+          <FormErrorMessage>{errors.bankCode?.message}</FormErrorMessage>
+        </FormControl>
+        <FormControl
+          isInvalid={errors.branchCode || errors.branchName ? true : false}
+        >
+          <Stack direction={{ base: "column", md: "row" }}>
+            <Heading
+              w={{ base: "", md: "30%" }}
+              as={FormLabel}
+              pt={2}
+              size="sm"
+              noOfLines={1}
+            >
+              支店・出張所
+            </Heading>
+            <HStack w="full">
+              <Input
+                maxW={300}
+                placeholder="支店・出張所名"
+                {...register("branchName", {
+                  validate: (data) => {
+                    if (watch("branchCode") && !data)
+                      return "正しい店番を入力して下さい";
+                  },
+                })}
+                noOfLines={1}
+                size="md"
+                border="none"
+                type="text"
+                readOnly
+              />
+              <Spacer />
+              <Input
+                maxW={200}
+                placeholder="店番を入力"
+                {...register("branchCode", {
+                  validate: (data) => {
+                    if (!data && (watch("bankCode") || watch("accountCode")))
+                      return "店番を入力して下さい";
+                  },
+                })}
+                noOfLines={1}
+                size="md"
+                bg="gray.200"
+                border="none"
+                type="number"
+              />
+              <Button colorScheme="twitter" onClick={getBranch}>
+                検索
+              </Button>
+            </HStack>
+          </Stack>
+          <FormErrorMessage>{errors.branchCode?.message}</FormErrorMessage>
+          <FormErrorMessage>{errors.branchName?.message}</FormErrorMessage>
+        </FormControl>
+        <FormControl isInvalid={errors.accountCode ? true : false}>
+          <Stack direction={{ base: "column", md: "row" }}>
+            <Heading
+              w={{ base: "", md: "30%" }}
+              as={FormLabel}
+              pt={2}
+              size="sm"
+              noOfLines={1}
+            >
+              口座番号
+            </Heading>
+            <Input
+              placeholder="口座番号を入力"
+              {...register("accountCode", {
+                validate: (data) => {
+                  if (!data && (watch("bankCode") || watch("branchCode")))
+                    return "口座番号を入力して下さい";
+                },
+              })}
+              noOfLines={1}
+              size="md"
+              bg="gray.200"
+              border="none"
+              type="number"
+            />
+          </Stack>
+          <FormErrorMessage>{errors.accountCode?.message}</FormErrorMessage>
+        </FormControl>
+        <Flex w="full">
+          <Spacer />
+          <Button size="sm" colorScheme="red" onClick={clearBankInfo}>
+            クリア
+          </Button>
+        </Flex>
+        <Button mt={5} type="submit" w="80%" colorScheme="twitter">
           更新
         </Button>
       </VStack>
