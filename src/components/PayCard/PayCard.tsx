@@ -1,7 +1,13 @@
 import { Avatar, Box, Heading, HStack, Stack } from "@chakra-ui/react";
-import { User } from "@/types";
+import { Profile } from "@/types";
 
-export const PayCard = ({ user, amount }: { user: User; amount: number }) => {
+export const PayCard = ({
+  user,
+  amount,
+}: {
+  user: Profile;
+  amount: number;
+}) => {
   return (
     <HStack
       px={5}
@@ -22,7 +28,7 @@ export const PayCard = ({ user, amount }: { user: User; amount: number }) => {
           ps={5}
           size="sm"
         >
-          {user.name}
+          {user.displayName}
         </Heading>
         <Heading
           textAlign="center"
