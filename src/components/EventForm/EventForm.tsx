@@ -268,7 +268,7 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
             >
               {users.map((user) => (
                 <option key={user.id} value={user.id}>
-                  {user.name}
+                  {user.displayName}
                 </option>
               ))}
             </Select>
@@ -312,7 +312,7 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
                 size="sm"
                 noOfLines={1}
               >
-                {users.find((user) => user.id === field.userId)?.name}
+                {users.find((user) => user.id === field.userId)?.displayName}
               </Heading>
               <HStack direction="row" w="full">
                 <Input

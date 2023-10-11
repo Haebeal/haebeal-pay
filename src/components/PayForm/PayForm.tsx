@@ -1,35 +1,42 @@
 import {
   Button,
   Divider,
+  Flex,
   FormControl,
   FormLabel,
   Heading,
+  IconButton,
   Input,
   Select,
   Skeleton,
   Stack,
+  useClipboard,
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { useCalcEvents } from "@/hooks/useCalcEvents";
 import { useUsers } from "@/hooks/useUsers";
 import { CalcEvent } from "@/types";
+import { useBank } from "@/hooks/useBank";
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 
 export const PayForm = () => {
   const navigate = useNavigate();
   const toast = useToast();
   const [isLoading, setLoading] = useState(false);
   const { users } = useUsers();
+  const { banks } = useBank();
   const { currentUser } = useAuth();
   const { addCalcEvent } = useCalcEvents();
 
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<CalcEvent>({
     defaultValues: {
@@ -64,6 +71,21 @@ export const PayForm = () => {
       setLoading(false);
     }
   };
+
+  const selectedUser = users.find(
+    (user) => user.id === watch(`distributions.0.userId`)
+  );
+  const bankClipboard = useClipboard("");
+  const branchCodeClipboard = useClipboard("");
+  const branchNameClipboard = useClipboard("");
+  const accountCodeClipboard = useClipboard("");
+
+  useEffect(() => {
+    bankClipboard.setValue(selectedUser?.bankCode ?? "");
+    branchCodeClipboard.setValue(selectedUser?.branchCode ?? "");
+    branchNameClipboard.setValue(selectedUser?.branchName ?? "");
+    accountCodeClipboard.setValue(selectedUser?.accountCode ?? "");
+  }, [selectedUser]);
 
   return (
     <Skeleton isLoaded={!isLoading}>
@@ -123,12 +145,104 @@ export const PayForm = () => {
                 .filter((user) => user.id !== currentUser?.uid)
                 .map((user) => (
                   <option key={user.id} value={user.id}>
-                    {user.name}
+                    {user.displayName}
                   </option>
                 ))}
             </Select>
           </Stack>
         </FormControl>
+        {selectedUser?.bankCode && (
+          <FormControl>
+            <Stack direction={{ base: "column", md: "row" }}>
+              <Heading
+                w={{ base: "", md: "30%" }}
+                as={FormLabel}
+                pt={2}
+                size="sm"
+                noOfLines={1}
+              >
+                振込先口座
+              </Heading>
+              <Stack w="full">
+                <Flex w="full">
+                  <Input
+                    value={
+                      banks.find((bank) => bank.code === selectedUser?.bankCode)
+                        ?.name
+                    }
+                    mr={2}
+                    border="none"
+                    readOnly
+                  />
+                  <IconButton
+                    aria-label="copy bank code"
+                    onClick={bankClipboard.onCopy}
+                    icon={
+                      bankClipboard.hasCopied ? <CheckIcon /> : <CopyIcon />
+                    }
+                  />
+                </Flex>
+                <Flex w="full">
+                  <Input
+                    value={selectedUser?.branchCode}
+                    mr={2}
+                    border="none"
+                    readOnly
+                  />
+                  <IconButton
+                    aria-label="copy branchCode code"
+                    onClick={branchCodeClipboard.onCopy}
+                    icon={
+                      branchCodeClipboard.hasCopied ? (
+                        <CheckIcon />
+                      ) : (
+                        <CopyIcon />
+                      )
+                    }
+                  />
+                </Flex>
+                <Flex w="full">
+                  <Input
+                    value={selectedUser?.branchName}
+                    mr={2}
+                    border="none"
+                    readOnly
+                  />
+                  <IconButton
+                    aria-label="copy branchName code"
+                    onClick={branchNameClipboard.onCopy}
+                    icon={
+                      branchNameClipboard.hasCopied ? (
+                        <CheckIcon />
+                      ) : (
+                        <CopyIcon />
+                      )
+                    }
+                  />
+                </Flex>
+                <Flex w="full">
+                  <Input
+                    value={selectedUser?.accountCode}
+                    mr={2}
+                    border="none"
+                    readOnly
+                  />
+                  <IconButton
+                    aria-label="copy accountCode code"
+                    onClick={accountCodeClipboard.onCopy}
+                    icon={
+                      accountCodeClipboard.hasCopied ? (
+                        <CheckIcon />
+                      ) : (
+                        <CopyIcon />
+                      )
+                    }
+                  />
+                </Flex>
+              </Stack>
+            </Stack>
+          </FormControl>
+        )}
         <FormControl>
           <Stack direction={{ base: "column", md: "row" }}>
             <Heading
