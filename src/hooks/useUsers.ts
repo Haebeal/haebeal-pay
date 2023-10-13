@@ -1,21 +1,17 @@
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
-import { Profile } from "@/types";
+import { User } from "@/types";
 import { firestore } from "@/utils";
 import { collection, getDocs, query } from "firebase/firestore";
 
-const usersSelector = selector<Profile[]>({
+const usersSelector = selector<User[]>({
   key: "usersSelector",
   get: async () => {
     const collectionRef = collection(firestore, "profiles");
     const { docs } = await getDocs(query(collectionRef));
     return docs.map((doc) => ({
       id: doc.id,
-      displayName: doc.data().displayName,
+      name: doc.data().displayName,
       photoURL: doc.data().photoURL,
-      bankCode: doc.data().bankCode,
-      branchCode: doc.data().branchCode,
-      branchName: doc.data().branchName,
-      accountCode: doc.data().accountCode,
     }));
   },
 });

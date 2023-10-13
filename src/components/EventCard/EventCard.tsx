@@ -75,8 +75,7 @@ export const EventCard = ({ eventId }: { eventId: string }) => {
           {calcEvent?.name}{" "}
           {calcEvent?.name !== "支払い"
             ? `（${
-                users.find((user) => user.id === calcEvent?.create_user)
-                  ?.displayName
+                users.find((user) => user.id === calcEvent?.create_user)?.name
               }）`
             : ""}
         </Heading>

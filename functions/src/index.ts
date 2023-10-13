@@ -12,10 +12,6 @@ exports.onCreateUser = functions.auth.user().onCreate((user) => {
     displayName: user.displayName,
     email: user.email,
     photoURL: user.photoURL,
-    bankCode: "",
-    branchCode: "",
-    branchName: "",
-    accountCode: "",
   });
 });
 
