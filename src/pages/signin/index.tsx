@@ -69,7 +69,6 @@ export const SigninPage = () => {
               bg="white"
               rounded="md"
               w="full"
-              px={10}
               py={8}
               gap={5}
               as="form"
