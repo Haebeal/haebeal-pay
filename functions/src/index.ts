@@ -10,7 +10,6 @@ exports.onCreateUser = functions.auth.user().onCreate((user) => {
   // profiles コレクションにユーザー情報の追加を行う
   firestore.collection("profiles").doc(user.uid).create({
     displayName: user.displayName,
-    email: user.email,
     photoURL: user.photoURL,
     bankCode: "",
     branchCode: "",

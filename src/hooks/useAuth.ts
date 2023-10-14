@@ -2,9 +2,12 @@ import {
   GoogleAuthProvider,
   linkWithPopup,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   unlink,
+  updateEmail,
+  updatePassword,
   User,
 } from "firebase/auth";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
@@ -33,12 +36,20 @@ export const useAuth = () => {
 
   const { refreshUsers } = useUsers();
 
-  const signin = useCallback(async () => {
+  const signinWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
     provider.addScope("https://www.googleapis.com/auth/userinfo.email");
     await signInWithPopup(auth, provider);
     refreshCurrentUser();
   }, []);
+
+  const signinWithPassword = useCallback(
+    async (data: { email: string; password: string }) => {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      refreshCurrentUser();
+    },
+    []
+  );
 
   const signout = useCallback(async () => {
     await signOut(auth);
@@ -54,11 +65,39 @@ export const useAuth = () => {
     }
   }, []);
 
+  const updateEmailAndPassword = useCallback(
+    async (data: { email: string; password: string }) => {
+      if (currentUser) {
+        await updateEmail(currentUser, data.email);
+        refreshCurrentUser();
+        if (data.password) {
+          await updatePassword(currentUser, data.password);
+        }
+        refreshCurrentUser();
+        refreshUsers();
+      }
+    },
+    []
+  );
+
   const changeGoogleLink = useCallback(async () => {
+    refreshCurrentUser();
     if (currentUser) {
       const provider = new GoogleAuthProvider();
       provider.addScope("https://www.googleapis.com/auth/userinfo.email");
-      await unlink(currentUser, provider.providerId);
+      if (
+        !currentUser.providerData.find(
+          (provider) => provider.providerId === "password"
+        )
+      ) {
+        throw new Error("パスワードを設定してください");
+      }
+      const linked = currentUser.providerData.find(
+        (provider) => provider.providerId === "google.com"
+      );
+      if (linked) {
+        await unlink(currentUser, provider.providerId);
+      }
       await linkWithPopup(currentUser, provider);
       refreshCurrentUser();
     }
@@ -66,9 +105,11 @@ export const useAuth = () => {
 
   return {
     currentUser,
-    signin,
+    signinWithGoogle,
+    signinWithPassword,
     signout,
     updateUserProfile,
+    updateEmailAndPassword,
     changeGoogleLink,
     refreshCurrentUser,
   };

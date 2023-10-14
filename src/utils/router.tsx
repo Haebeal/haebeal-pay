@@ -8,6 +8,7 @@ import { EditEventPage } from "@/pages/calc/event/:id";
 import { PayPage } from "@/pages/calc/pay";
 import { NotFoundPage } from "@/pages/notfound";
 import { UserProfilePage } from "@/pages/profile";
+import { AccountPage } from "@/pages/account";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ export const router = createBrowserRouter([
       {
         path: "pay",
         element: <PayPage />,
+      },
+      {
+        path: "account",
+        element: <AccountPage />,
       },
       {
         path: "profile",
