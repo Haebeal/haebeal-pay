@@ -1,9 +1,9 @@
 import {
   GoogleAuthProvider,
-  linkWithPopup,
+  linkWithRedirect,
   onAuthStateChanged,
   signInWithEmailAndPassword,
-  signInWithPopup,
+  signInWithRedirect,
   signOut,
   unlink,
   updateEmail,
@@ -39,7 +39,7 @@ export const useAuth = () => {
   const signinWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
     provider.addScope("https://www.googleapis.com/auth/userinfo.email");
-    await signInWithPopup(auth, provider);
+    await signInWithRedirect(auth, provider);
     refreshCurrentUser();
   }, []);
 
@@ -98,7 +98,7 @@ export const useAuth = () => {
       if (linked) {
         await unlink(currentUser, provider.providerId);
       }
-      await linkWithPopup(currentUser, provider);
+      await linkWithRedirect(currentUser, provider);
       refreshCurrentUser();
     }
   }, []);
