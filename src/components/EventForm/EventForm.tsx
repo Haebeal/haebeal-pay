@@ -105,7 +105,9 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
       });
       return;
     }
-    const amount = watch("sum_amount") / (users.length - disableFields.length);
+    const amount = Math.floor(
+      watch("sum_amount") / (users.length - disableFields.length)
+    );
     fields.forEach((field, index) => {
       if (disableFields.includes(field.userId)) {
         update(index, {
