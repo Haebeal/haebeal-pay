@@ -194,7 +194,6 @@ export const AccountForm = () => {
               bg="gray.200"
               border="none"
               type="password"
-              required
             />
           </Stack>
         </FormControl>

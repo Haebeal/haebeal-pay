@@ -62,7 +62,7 @@ export const useAuth = () => {
         await updateDoc(docRef, {
           email: data.email,
         });
-        await updatePassword(currentUser, data.password);
+        if (data.password) await updatePassword(currentUser, data.password);
       }
     },
     []
