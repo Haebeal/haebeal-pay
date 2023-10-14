@@ -2,9 +2,11 @@ import {
   GoogleAuthProvider,
   linkWithPopup,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   unlink,
+  updateEmail,
   updatePassword,
   User,
 } from "firebase/auth";
@@ -34,12 +36,20 @@ export const useAuth = () => {
 
   const { refreshUsers } = useUsers();
 
-  const signin = useCallback(async () => {
+  const signinWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
     provider.addScope("https://www.googleapis.com/auth/userinfo.email");
     await signInWithPopup(auth, provider);
     refreshCurrentUser();
   }, []);
+
+  const signinWithPassword = useCallback(
+    async (data: { email: string; password: string }) => {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      refreshCurrentUser();
+    },
+    []
+  );
 
   const signout = useCallback(async () => {
     await signOut(auth);
@@ -58,11 +68,13 @@ export const useAuth = () => {
   const updateEmailAndPassword = useCallback(
     async (data: { email: string; password: string }) => {
       if (currentUser) {
-        const docRef = doc(firestore, "profiles", currentUser.uid);
-        await updateDoc(docRef, {
-          email: data.email,
-        });
-        if (data.password) await updatePassword(currentUser, data.password);
+        await updateEmail(currentUser, data.email);
+        refreshCurrentUser();
+        if (data.password) {
+          await updatePassword(currentUser, data.password);
+        }
+        refreshCurrentUser();
+        refreshUsers();
       }
     },
     []
@@ -93,7 +105,8 @@ export const useAuth = () => {
 
   return {
     currentUser,
-    signin,
+    signinWithGoogle,
+    signinWithPassword,
     signout,
     updateUserProfile,
     updateEmailAndPassword,
