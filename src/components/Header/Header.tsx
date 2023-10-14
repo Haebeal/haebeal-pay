@@ -12,14 +12,13 @@ import {
   Spacer,
   useMediaQuery,
 } from "@chakra-ui/react";
-import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { routes } from "@/utils";
 import { Navigator } from "@/components/Navigator";
 
 export const Header = () => {
   const location = useLocation();
-  const navigate = useNavigate();
   const { signout, currentUser } = useAuth();
   const [isMobile] = useMediaQuery(`(max-width: 48em)`);
 
@@ -60,8 +59,11 @@ export const Header = () => {
             <MenuGroup title={currentUser?.displayName ?? "未ログイン"}>
               {currentUser && (
                 <>
-                  <MenuItem onClick={() => navigate("/profile")}>
-                    プロフィール設定
+                  <MenuItem as={RouterLink} to="/account">
+                    アカウント
+                  </MenuItem>
+                  <MenuItem as={RouterLink} to="/profile">
+                    プロフィール
                   </MenuItem>
                   <MenuItem onClick={signout}>ログアウト</MenuItem>
                 </>

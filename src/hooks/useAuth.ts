@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   signOut,
   unlink,
+  updatePassword,
   User,
 } from "firebase/auth";
 import { selector, useRecoilRefresher_UNSTABLE, useRecoilValue } from "recoil";
@@ -54,10 +55,31 @@ export const useAuth = () => {
     }
   }, []);
 
+  const updateEmailAndPassword = useCallback(
+    async (data: { email: string; password: string }) => {
+      if (currentUser) {
+        const docRef = doc(firestore, "profiles", currentUser.uid);
+        await updateDoc(docRef, {
+          email: data.email,
+        });
+        await updatePassword(currentUser, data.password);
+      }
+    },
+    []
+  );
+
   const changeGoogleLink = useCallback(async () => {
+    refreshCurrentUser();
     if (currentUser) {
       const provider = new GoogleAuthProvider();
       provider.addScope("https://www.googleapis.com/auth/userinfo.email");
+      if (
+        !currentUser.providerData.find(
+          (provider) => provider.providerId === "password"
+        )
+      ) {
+        throw new Error("パスワードを設定してください");
+      }
       await unlink(currentUser, provider.providerId);
       await linkWithPopup(currentUser, provider);
       refreshCurrentUser();
@@ -69,6 +91,7 @@ export const useAuth = () => {
     signin,
     signout,
     updateUserProfile,
+    updateEmailAndPassword,
     changeGoogleLink,
     refreshCurrentUser,
   };

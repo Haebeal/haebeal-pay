@@ -19,29 +19,15 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useAuth } from "@/hooks/useAuth";
 import { Profile } from "@/types";
-import { FaGoogle } from "react-icons/fa";
 import { useUsers } from "@/hooks/useUsers";
 import { useBank } from "@/hooks/useBank";
 
 export const UserProfileForm = () => {
   const toast = useToast();
   const [isLoading, setLoading] = useState(true);
-  const {
-    currentUser,
-    updateUserProfile,
-    changeGoogleLink,
-    refreshCurrentUser,
-  } = useAuth();
+  const { currentUser, updateUserProfile, refreshCurrentUser } = useAuth();
   const { users } = useUsers();
   const { banks } = useBank();
-
-  const linkOtherAccount = async () => {
-    await changeGoogleLink();
-    toast({
-      title: "更新しました",
-      status: "success",
-    });
-  };
 
   const {
     register,
@@ -86,8 +72,8 @@ export const UserProfileForm = () => {
   };
 
   useEffect(() => {
-    refreshCurrentUser();
     setLoading(true);
+    refreshCurrentUser();
     const currentUserProfile = users.find(
       (user) => user.id === currentUser?.uid
     );
@@ -152,28 +138,6 @@ export const UserProfileForm = () => {
       >
         <Heading size="md">プロフィール設定</Heading>
         <Divider />
-        <FormControl isInvalid={errors.id ? true : false}>
-          <Stack direction={{ base: "column", md: "row" }}>
-            <Heading
-              w={{ base: "", md: "30%" }}
-              as={FormLabel}
-              pt={2}
-              size="sm"
-              noOfLines={1}
-            >
-              ユーザーID
-            </Heading>
-            <Input
-              placeholder="ユーザーID"
-              {...register("id")}
-              noOfLines={1}
-              size="md"
-              border="none"
-              type="text"
-              readOnly
-            />
-          </Stack>
-        </FormControl>
         <FormControl isInvalid={errors.displayName ? true : false}>
           <Stack direction={{ base: "column", md: "row" }}>
             <Heading
@@ -195,43 +159,6 @@ export const UserProfileForm = () => {
               type="text"
               required
             />
-          </Stack>
-        </FormControl>
-        <FormControl isInvalid={errors.photoURL ? true : false}>
-          <Stack direction={{ base: "column", md: "row" }}>
-            <Heading
-              w={{ base: "", md: "30%" }}
-              as={FormLabel}
-              pt={2}
-              size="sm"
-              noOfLines={1}
-            >
-              Google連携
-            </Heading>
-            <Stack w="full" direction={{ base: "column", md: "row" }}>
-              <Input
-                w={{ base: "", md: "70%" }}
-                placeholder="Email"
-                value={
-                  currentUser?.providerData.find(
-                    (provider) => provider.providerId === "google.com"
-                  )?.email ?? ""
-                }
-                noOfLines={1}
-                size="md"
-                border="none"
-                type="text"
-                readOnly
-              />
-              <Spacer />
-              <Button
-                leftIcon={<FaGoogle />}
-                colorScheme="twitter"
-                onClick={linkOtherAccount}
-              >
-                別アカウントを連携
-              </Button>
-            </Stack>
           </Stack>
         </FormControl>
         <FormControl isInvalid={errors.photoURL ? true : false}>
