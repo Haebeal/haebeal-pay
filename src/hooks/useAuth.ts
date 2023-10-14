@@ -80,7 +80,12 @@ export const useAuth = () => {
       ) {
         throw new Error("パスワードを設定してください");
       }
-      await unlink(currentUser, provider.providerId);
+      const linked = currentUser.providerData.find(
+        (provider) => provider.providerId === "google.com"
+      );
+      if (linked) {
+        await unlink(currentUser, provider.providerId);
+      }
       await linkWithPopup(currentUser, provider);
       refreshCurrentUser();
     }

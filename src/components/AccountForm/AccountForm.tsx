@@ -40,6 +40,12 @@ export const AccountForm = () => {
       status: "success",
     });
     refreshCurrentUser();
+    if (currentUser) {
+      reset({
+        email: currentUser.email ?? "",
+        password: "",
+      });
+    }
     setLoading(false);
   };
 
@@ -53,7 +59,7 @@ export const AccountForm = () => {
     try {
       await changeGoogleLink();
       toast({
-        title: "更新しました",
+        title: "Google連携を更新しました",
         status: "success",
       });
     } catch (error) {
@@ -77,6 +83,10 @@ export const AccountForm = () => {
     setLoading(false);
   }, [currentUser]);
 
+  const linkedGoogleAccount = currentUser?.providerData.find(
+    (provider) => provider.providerId === "google.com"
+  )?.email;
+
   return (
     <Skeleton isLoaded={!isLoading}>
       <VStack
@@ -88,7 +98,7 @@ export const AccountForm = () => {
         as="form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Heading size="md">プロフィール設定</Heading>
+        <Heading size="md">アカウント設定</Heading>
         <Divider />
         <Stack w="full" direction={{ base: "column", md: "row" }}>
           <Heading
@@ -124,11 +134,7 @@ export const AccountForm = () => {
             <Input
               w={{ base: "", md: "70%" }}
               placeholder="Email"
-              value={
-                currentUser?.providerData.find(
-                  (provider) => provider.providerId === "google.com"
-                )?.email ?? ""
-              }
+              value={linkedGoogleAccount ?? "未連携"}
               noOfLines={1}
               size="md"
               border="none"
@@ -141,7 +147,7 @@ export const AccountForm = () => {
               colorScheme="twitter"
               onClick={linkOtherAccount}
             >
-              別アカウントを連携
+              {linkedGoogleAccount && "別"}アカウントを連携
             </Button>
           </Stack>
         </Stack>
