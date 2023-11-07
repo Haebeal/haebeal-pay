@@ -23,3 +23,5 @@ jobs:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_HAEBEAL_PAY_8D2DD }}"
           projectId: haebeal-pay-8d2dd
+        env:
+          FIREBASE_CLI_EXPERIMENTS: webframeworks
