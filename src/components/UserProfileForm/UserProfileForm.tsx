@@ -40,20 +40,12 @@ export const UserProfileForm = () => {
   } = useForm<Profile>();
   const onSubmit: SubmitHandler<Profile> = async (formData) => {
     setLoading(true);
-    const API_TOKEN = import.meta.env.VITE_BANK_CODE_JP_TOKEN;
     try {
       if (formData.branchCode && formData.branchName) {
-        const response = await fetch(
-          `https://apis.bankcode-jp.com/v3/banks/${formData.bankCode}/branches/${formData.branchCode}`,
-          {
-            method: "GET",
-            headers: {
-              apiKey: API_TOKEN,
-            },
-          }
-        );
+        const endpoint = `https://bank.teraren.com/banks/${formData.bankCode}/branches/${formData.branchCode}.json`;
+        const response = await fetch(endpoint);
         const result = await response.json();
-        if (result.branch.name !== formData.branchName) {
+        if (result.name !== formData.branchName) {
           throw new Error("");
         }
       }
@@ -97,19 +89,11 @@ export const UserProfileForm = () => {
       setValue("branchName", "");
       return;
     }
-    const API_TOKEN = import.meta.env.VITE_BANK_CODE_JP_TOKEN;
+    const endpoint = `https://bank.teraren.com/banks/${bankCode}/branches/${branchCode}.json`;
     try {
-      const response = await fetch(
-        `https://apis.bankcode-jp.com/v3/banks/${bankCode}/branches/${branchCode}`,
-        {
-          method: "GET",
-          headers: {
-            apiKey: API_TOKEN,
-          },
-        }
-      );
+      const response = await fetch(endpoint);
       const result = await response.json();
-      setValue("branchName", result.branch.name);
+      setValue("branchName", result.name);
     } catch (error) {
       setValue("branchName", "");
       toast({
