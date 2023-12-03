@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "haebeal-pay-8d2dd"
-  }
+    "prod": "haebeal-pay-8d2dd",
+    "dev": "haebeal-pay-dev"
+  },
+  "targets": {},
+  "etags": {}
 }
