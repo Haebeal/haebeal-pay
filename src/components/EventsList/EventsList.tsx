@@ -26,7 +26,7 @@ export const EventsList = () => {
   useEffect(() => {
     const q = query(
       collection(getFirestore(firebase), "calc_events"),
-      orderBy("event_date", "desc")
+      orderBy("event_date", "desc"),
     );
     const unsub = onSnapshot(q, (snapshot) => {
       setLoading(true);

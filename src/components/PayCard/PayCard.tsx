@@ -1,5 +1,5 @@
-import { Avatar, Box, Heading, HStack, Stack } from "@chakra-ui/react";
 import { Profile } from "@/types";
+import { Avatar, Box, HStack, Heading, Stack } from "@chakra-ui/react";
 
 export const PayCard = ({
   user,

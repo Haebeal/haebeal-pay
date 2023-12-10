@@ -48,7 +48,7 @@ export const useAuth = () => {
       await signInWithEmailAndPassword(auth, data.email, data.password);
       refreshCurrentUser();
     },
-    []
+    [],
   );
 
   const signout = useCallback(async () => {
@@ -77,7 +77,7 @@ export const useAuth = () => {
         refreshUsers();
       }
     },
-    []
+    [],
   );
 
   const changeGoogleLink = useCallback(async () => {
@@ -87,13 +87,13 @@ export const useAuth = () => {
       provider.addScope("https://www.googleapis.com/auth/userinfo.email");
       if (
         !currentUser.providerData.find(
-          (provider) => provider.providerId === "password"
+          (provider) => provider.providerId === "password",
         )
       ) {
         throw new Error("パスワードを設定してください");
       }
       const linked = currentUser.providerData.find(
-        (provider) => provider.providerId === "google.com"
+        (provider) => provider.providerId === "google.com",
       );
       if (linked) {
         await unlink(currentUser, provider.providerId);

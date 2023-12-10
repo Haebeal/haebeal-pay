@@ -1,3 +1,9 @@
+import { useAuth } from "@/hooks/useAuth";
+import { useBank } from "@/hooks/useBank";
+import { useCalcEvents } from "@/hooks/useCalcEvents";
+import { useUsers } from "@/hooks/useUsers";
+import { CalcEvent } from "@/types";
+import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 import {
   Button,
   Divider,
@@ -10,19 +16,13 @@ import {
   Select,
   Skeleton,
   Stack,
+  VStack,
   useClipboard,
   useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
-import { useCalcEvents } from "@/hooks/useCalcEvents";
-import { useUsers } from "@/hooks/useUsers";
-import { CalcEvent } from "@/types";
-import { useBank } from "@/hooks/useBank";
-import { CheckIcon, CopyIcon } from "@chakra-ui/icons";
 
 export const PayForm = () => {
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ export const PayForm = () => {
   };
 
   const selectedUser = users.find(
-    (user) => user.id === watch(`distributions.0.userId`)
+    (user) => user.id === watch(`distributions.0.userId`),
   );
   const bankClipboard = useClipboard("");
   const branchCodeClipboard = useClipboard("");

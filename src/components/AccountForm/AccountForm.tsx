@@ -84,7 +84,7 @@ export const AccountForm = () => {
   }, [currentUser]);
 
   const linkedGoogleAccount = currentUser?.providerData.find(
-    (provider) => provider.providerId === "google.com"
+    (provider) => provider.providerId === "google.com",
   )?.email;
 
   return (

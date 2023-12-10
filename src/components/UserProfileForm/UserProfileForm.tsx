@@ -67,7 +67,7 @@ export const UserProfileForm = () => {
     setLoading(true);
     refreshCurrentUser();
     const currentUserProfile = users.find(
-      (user) => user.id === currentUser?.uid
+      (user) => user.id === currentUser?.uid,
     );
     if (currentUserProfile) {
       reset(currentUserProfile);

@@ -33,13 +33,13 @@ export const EventCard = ({ eventId }: { eventId: string }) => {
     calcEvent?.create_user === currentUser?.uid
       ? calcEvent?.distributions.reduce(
           (pre, distri) => Number(pre) + Number(distri.amount),
-          0
+          0,
         )
       : 0 -
         Number(
           calcEvent?.distributions.find(
-            (distri) => distri.userId === currentUser?.uid
-          )?.amount ?? 0
+            (distri) => distri.userId === currentUser?.uid,
+          )?.amount ?? 0,
         );
 
   return (

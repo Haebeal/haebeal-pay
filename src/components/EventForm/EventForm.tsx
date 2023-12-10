@@ -106,7 +106,7 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
       return;
     }
     const amount = Math.floor(
-      watch("sum_amount") / (users.length - disableFields.length)
+      watch("sum_amount") / (users.length - disableFields.length),
     );
     fields.forEach((field, index) => {
       if (disableFields.includes(field.userId)) {
@@ -145,12 +145,12 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
               userId: user.id,
               amount:
                 calcEvent?.distributions.find(
-                  (distribution) => distribution.userId === user.id
+                  (distribution) => distribution.userId === user.id,
                 )?.amount ?? 0,
             },
             {
               shouldFocus: false,
-            }
+            },
           );
         });
     }
@@ -162,7 +162,7 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
     : watch("sum_amount") -
       watch("distributions").reduce(
         (pre, field) => pre + Number(field.amount),
-        0
+        0,
       );
 
   return (
@@ -339,8 +339,8 @@ export const EventForm = ({ eventId }: { eventId?: string }) => {
                     if (event.currentTarget.checked) {
                       setDisableFields(
                         disableFields.filter(
-                          (element) => element !== field.userId
-                        )
+                          (element) => element !== field.userId,
+                        ),
                       );
                     } else {
                       setDisableFields(disableFields.concat(field.userId));

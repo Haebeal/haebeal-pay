@@ -42,5 +42,5 @@ root.render(
         </React.Suspense>
       </ChakraProvider>
     </RecoilRoot>
-  </React.StrictMode>
+  </React.StrictMode>,
 );
