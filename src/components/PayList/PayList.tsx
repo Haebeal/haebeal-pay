@@ -21,13 +21,13 @@ export const PayList = () => {
         if (calcEvent.create_user === currentUser.uid) {
           amount += Number(
             calcEvent.distributions.find((distri) => distri.userId === user.id)
-              ?.amount ?? 0
+              ?.amount ?? 0,
           );
         } else if (calcEvent.create_user === user.id) {
           amount -= Number(
             calcEvent.distributions.find(
-              (distri) => distri.userId === currentUser.uid
-            )?.amount ?? 0
+              (distri) => distri.userId === currentUser.uid,
+            )?.amount ?? 0,
           );
         }
       });

@@ -19,7 +19,7 @@ const calcEventsSelector = selector<CalcEvent[]>({
   get: async () => {
     const collectionRef = collection(getFirestore(firebase), "calc_events");
     const { docs } = await getDocs(
-      query(collectionRef, orderBy("event_date", "desc"))
+      query(collectionRef, orderBy("event_date", "desc")),
     );
     return docs.map(
       (doc): CalcEvent => ({
@@ -35,7 +35,7 @@ const calcEventsSelector = selector<CalcEvent[]>({
           .join("-"),
         sum_amount: doc.data().sum_amount,
         distributions: doc.data().distributions ?? [],
-      })
+      }),
     );
   },
 });
@@ -54,7 +54,7 @@ export const useCalcEvents = () => {
       refreshCalcEvents();
       return id;
     },
-    []
+    [],
   );
 
   const deleteEvent = useCallback(async (eventId: string): Promise<void> => {

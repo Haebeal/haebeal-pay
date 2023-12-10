@@ -54,7 +54,7 @@ export const calcEventSelector = selectorFamily<
 export const useCalcEvent = (eventId: string | undefined) => {
   const calcEvent = useRecoilValue(calcEventSelector(eventId));
   const refreshCalcEvent = useRecoilRefresher_UNSTABLE(
-    calcEventSelector(eventId)
+    calcEventSelector(eventId),
   );
 
   const { refreshCalcEvents } = useCalcEvents();
@@ -71,7 +71,7 @@ export const useCalcEvent = (eventId: string | undefined) => {
         refreshCalcEvents();
       }
     },
-    []
+    [],
   );
 
   return { calcEvent, updateCalcEvent, refreshCalcEvent };
