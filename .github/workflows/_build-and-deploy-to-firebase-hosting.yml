@@ -35,4 +35,4 @@ jobs:
       - name: build
         run: npm ci && npm run build
       - name: Deploy
-        run: firebase use ${{ inputs.environment }} && firebase deploy --only hosting
+        run: firebase use dev && firebase deploy --only hosting
