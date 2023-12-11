@@ -16,7 +16,7 @@ jobs:
       id-token: write
       contents: read
     with:
-      environment: Development
+      environment: dev
     secrets: inherit
   deploy-to-production:
     name: deploy Firebase Hosting to production environment
@@ -26,5 +26,5 @@ jobs:
       id-token: write
       contents: read
     with:
-      environment: Production
+      environment: prod
     secrets: inherit
