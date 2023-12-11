@@ -10,7 +10,7 @@ name: Deploy to Firebase Hosting on push
 jobs:
   deploy-to-develop:
     name: deploy Firebase Hosting to develop environment
-    if: ${{ github.ref == 'refs/heads/develop' || github.base_ref == 'develop' }}
+    # if: ${{ github.ref == 'refs/heads/develop' || github.base_ref == 'develop' }}
     uses: ./.github/workflows/_build-and-deploy-to-firebase-hosting.yml
     permissions:
       id-token: write
