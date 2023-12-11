@@ -5,8 +5,8 @@ name: Deploy to Firebase Hosting on push
       - main
       - develop
       - feature/**
-    paths:
-      - "src/**"
+    # paths:
+    #   - "src/**"
 jobs:
   deploy-to-develop:
     name: deploy Firebase Hosting to develop environment
